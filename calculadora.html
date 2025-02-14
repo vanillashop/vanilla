@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Vanilla Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #80515c;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .banner {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .products, .combos {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            justify-items: center;
+            margin-bottom: 20px;
+        }
+        .product, .combo {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .product span, .combo span {
+            margin-bottom: 5px;
+        }
+        input {
+            width: 60px;
+            text-align: center;
+            border: none;
+            border-radius: 3px;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        .result-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .result-box {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #a35d6a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #c06b7a;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .popup button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://i.postimg.cc/FFJSvd2Z/banner-vanilla.gif" alt="Banner Animado" class="banner">
+            <h2>Calculadora Vanilla Shop</h2>
+        </div>
+        <h3>Produtos</h3>
+        <div id="products" class="products"></div>
+        <h3>Combos</h3>
+        <div id="combos" class="combos"></div>
+        <div class="result-container">
+            <p class="result-box">Total: $ <span id="total">0.00</span> | Devolução (20%): $ <span id="devolucao">0.00</span></p>
+        </div>
+        <div class="btn-container">
+            <button class="btn" onclick="aplicarParceria()">PARCERIA</button>
+            <button class="btn" onclick="limparValores()">LIMPAR</button>
+            <button class="btn" onclick="mostrarValores()">VALORES</button>
+        </div>
+        <p class="footer">Enviar a devolução nos seguintes contatos:<br>Sett Lothbrook | 358 ou Hel Ariath | 381</p>
+        <p class="footer">Desenvolvido por Sett Lothbrook | 358</p>
+    </div>
+    
+    <div id="popup" class="popup">
+        <h3>Valores dos Produtos</h3>
+        <ul id="listaValores"></ul>
+        <button class="btn" onclick="fecharPopup()">Fechar</button>
+    </div>
+    
+    <script>
+		const products = [
+			{ name: "Aliança (un)", price: 30000 },
+			{ name: "Anel Compromisso (par)", price: 30000 },
+			{ name: "Bolo de Aniversário", price: 15000 },
+			{ name: "Box Revelação", price: 25000 },
+			{ name: "Box Revelação Menina(o)", price: 25000 },
+			{ name: "Buquê", price: 3000 },
+			{ name: "Caixa de Balões", price: 10000 },
+			{ name: "Caixa de Chocolate", price: 5000 },
+			{ name: "Cesta Erótica", price: 30000 },
+			{ name: "Cesta Romântica", price: 25000 },
+			{ name: "Chicote", price: 8000 },
+			{ name: "Cinto Erótico", price: 10000 },
+			{ name: "Colar Casal", price: 15000 },
+			{ name: "Colar de Pérolas", price: 10000 },
+			{ name: "Corda Erótica", price: 6000 },
+			{ name: "Dado Erótico", price: 5000 },
+			{ name: "Perfume", price: 10000 },
+			{ name: "Rosa", price: 500 },
+			{ name: "Urso Pequeno", price: 3000 },
+			{ name: "Urso Grande", price: 6000 },
+			{ name: "Vibrador", price: 10000 }
+];
+        
+        const combos = [
+            { name: "Combo Chá Revelação", price: 80750 },
+            { name: "Combo Amor Luxuoso", price: 104500 },
+            { name: "Combo Pedido", price: 57000 },
+            { name: "Combo Celebração Total", price: 47500 },
+            { name: "Combo Romance Perfeito", price: 38000 },
+            { name: "Combo Noite Proibida", price: 47500 }
+        ];
+
+        function generateProducts(containerId, items) {
+            const container = document.getElementById(containerId);
+            items.forEach((item, index) => {
+                const div = document.createElement("div");
+                div.classList.add(containerId.slice(0, -1));
+                div.innerHTML = `
+                    <span>${item.name}</span>
+                    <input type="number" value="0" min="0" data-index="${index}" onchange="updateTotal()">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function updateTotal() {
+            let total = 0;
+
+            document.querySelectorAll("#products input").forEach((input, index) => {
+                total += products[index].price * Number(input.value);
+            });
+
+            document.querySelectorAll("#combos input").forEach((input, index) => {
+                total += combos[index].price * Number(input.value);
+            });
+
+            let devolucao = total * 0.2; // 20% de devolução
+
+            document.getElementById("total").innerText = total.toLocaleString();
+            document.getElementById("devolucao").innerText = devolucao.toLocaleString();
+        }
+
+        function mostrarValores() {
+            const lista = document.getElementById("listaValores");
+            lista.innerHTML = "";
+
+            [...products, ...combos].forEach(item => {
+                const li = document.createElement("li");
+                li.innerText = `${item.name}: $${item.price.toLocaleString()}`;
+                lista.appendChild(li);
+            });
+
+            document.getElementById("popup").style.display = "block";
+        }
+
+        function fecharPopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        function aplicarParceria() {
+            let total = parseInt(document.getElementById("total").innerText.replace(/\D/g, "")) || 0;
+            let novoTotal = total * 0.8; // 20% de desconto
+
+            document.getElementById("total").innerText = novoTotal.toLocaleString();
+            document.getElementById("devolucao").innerText = (novoTotal * 0.2).toLocaleString();
+        }
+
+        function limparValores() {
+            document.querySelectorAll("input[type='number']").forEach(input => input.value = 0);
+            updateTotal();
+        }
+
+        generateProducts("products", products);
+        generateProducts("combos", combos);
+    </script>
+</body>
+</html>
