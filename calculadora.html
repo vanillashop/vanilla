@@ -241,6 +241,12 @@
         function limparValores() {
             document.querySelectorAll("input[type='number']").forEach(input => input.value = 0);
             updateTotal();
+
+            // Resetando o cálculo para o valor normal
+            parceriaAplicada = false; // Desfazendo a aplicação do desconto
+            let total = 0;
+            document.getElementById("total").innerText = total.toLocaleString();
+            document.getElementById("devolucao").innerText = (total * 0.2).toLocaleString();
         }
 
         generateProducts("products", products);
