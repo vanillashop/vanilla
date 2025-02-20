@@ -141,29 +141,31 @@
     </div>
     
     <script>
-		const products = [
-			{ name: "Aliança (un)", price: 30000 },
-			{ name: "Anel Compromisso (par)", price: 30000 },
-			{ name: "Bolo de Aniversário", price: 15000 },
-			{ name: "Box Revelação", price: 25000 },
-			{ name: "Box Revelação Menina(o)", price: 25000 },
-			{ name: "Buquê", price: 3000 },
-			{ name: "Caixa de Balões", price: 10000 },
-			{ name: "Caixa de Chocolate", price: 5000 },
-			{ name: "Cesta Erótica", price: 30000 },
-			{ name: "Cesta Romântica", price: 25000 },
-			{ name: "Chicote", price: 8000 },
-			{ name: "Cinto Erótico", price: 10000 },
-			{ name: "Colar Casal", price: 15000 },
-			{ name: "Colar de Pérolas", price: 10000 },
-			{ name: "Corda Erótica", price: 6000 },
-			{ name: "Dado Erótico", price: 5000 },
-			{ name: "Perfume", price: 10000 },
-			{ name: "Rosa", price: 500 },
-			{ name: "Urso Pequeno", price: 3000 },
-			{ name: "Urso Grande", price: 6000 },
-			{ name: "Vibrador", price: 10000 }
-];
+        let parceriaAplicada = false; // Variável para controlar o estado do botão
+
+        const products = [
+            { name: "Aliança (un)", price: 30000 },
+            { name: "Anel Compromisso (par)", price: 30000 },
+            { name: "Bolo de Aniversário", price: 15000 },
+            { name: "Box Revelação", price: 25000 },
+            { name: "Box Revelação Menina(o)", price: 25000 },
+            { name: "Buquê", price: 3000 },
+            { name: "Caixa de Balões", price: 10000 },
+            { name: "Caixa de Chocolate", price: 5000 },
+            { name: "Cesta Erótica", price: 30000 },
+            { name: "Cesta Romântica", price: 25000 },
+            { name: "Chicote", price: 8000 },
+            { name: "Cinto Erótico", price: 10000 },
+            { name: "Colar Casal", price: 15000 },
+            { name: "Colar de Pérolas", price: 10000 },
+            { name: "Corda Erótica", price: 6000 },
+            { name: "Dado Erótico", price: 5000 },
+            { name: "Perfume", price: 10000 },
+            { name: "Rosa", price: 500 },
+            { name: "Urso Pequeno", price: 3000 },
+            { name: "Urso Grande", price: 6000 },
+            { name: "Vibrador", price: 10000 }
+        ];
         
         const combos = [
             { name: "Combo Chá Revelação", price: 80750 },
@@ -222,11 +224,18 @@
         }
 
         function aplicarParceria() {
+            if (parceriaAplicada) {
+                // Se a parceria já foi aplicada, não faz nada
+                return;
+            }
+            
             let total = parseInt(document.getElementById("total").innerText.replace(/\D/g, "")) || 0;
             let novoTotal = total * 0.8; // 20% de desconto
 
             document.getElementById("total").innerText = novoTotal.toLocaleString();
             document.getElementById("devolucao").innerText = (novoTotal * 0.2).toLocaleString();
+            
+            parceriaAplicada = true; // Marca que a parceria foi aplicada
         }
 
         function limparValores() {
