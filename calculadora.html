@@ -1,145 +1,270 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" <!-- Google Fonts: exemplo com Poppins -->
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+	<!-- Font Awesome para ícones -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Calculadora Vanilla Shop</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #80515c;
-            color: white;
-            text-align: center;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .banner {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-        .products, .combos {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            justify-items: center;
-            margin-bottom: 20px;
-        }
-        .product, .combo {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .product span, .combo span {
-            margin-bottom: 5px;
-        }
-        input {
-            width: 60px;
-            text-align: center;
-            border: none;
-            border-radius: 3px;
-            padding: 5px;
-            box-sizing: border-box;
-        }
-        .result-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .result-box {
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .btn {
-            margin-top: 15px;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            background-color: #a35d6a;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #c06b7a;
-        }
-        .footer {
-            margin-top: 20px;
-            font-size: 12px;
-        }
-        .btn-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            color: black;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .popup button {
-            margin-top: 10px;
-        }
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #caa6a0, #80515c);
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+
+.header h2 {
+    margin-top: 10px;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.banner {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+.products,
+.combos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.product,
+.combo {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 12px;
+    transition: transform 0.3s ease, background 0.3s ease;
+    text-align: center;
+}
+
+.product:hover,
+.combo:hover {
+    transform: scale(1.03);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.product span,
+.combo span {
+    margin-bottom: 10px;
+    display: block;
+    font-weight: 500;
+}
+
+input[type="number"] {
+    width: 60px;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.result-container {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.result-box {
+    background-color: rgba(255,255,255,0.2);
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.btn-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 12px 25px;
+    background-color: #f3d1d1;
+    color: #4a2d33;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.btn:hover {
+    background-color: #ffe8e8;
+    transform: scale(1.05);
+}
+
+.footer {
+    margin-top: 30px;
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+/* Popups */
+#popup, #popupValores {
+    display: none;
+    position: fixed;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    background-color: #fff;
+    color: #333;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    width: 350px;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: all 0.4s ease;
+    opacity: 0;
+}
+
+#popup.show, #popupValores.show {
+    display: block;
+    opacity: 1;
+}
+
+#popup h3, #popupValores h3 {
+    margin-top: 0;
+    color: #a35d6a;
+    border-bottom: 2px solid #f3d1d1;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+#popup table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+#popup table thead {
+    background-color: #a35d6a;
+    color: white;
+}
+
+#popup th, #popup td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+#popup tbody tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+
+#popup tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+#popup button.close-btn, #popupValores button {
+    margin-top: 15px;
+    padding: 10px;
+    width: 100%;
+    background-color: #f3d1d1;
+    color: #4a2d33;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#popup button.close-btn:hover, #popupValores button:hover {
+    background-color: #ffe8e8;
+}
+
+/* Scrollbar */
+#popup::-webkit-scrollbar {
+    width: 8px;
+}
+#popup::-webkit-scrollbar-thumb {
+    background-color: #a35d6a;
+    border-radius: 4px;
+}
+#popup::-webkit-scrollbar-track {
+    background-color: #eee;
+}
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://i.postimg.cc/FFJSvd2Z/banner-vanilla.gif" alt="Banner Animado" class="banner">
-            <h2>Calculadora Vanilla Shop</h2>
+            <img src="https://i.postimg.cc/FFJSvd2Z/banner-vanilla.gif" alt="Banner Animado" class="banner" />
+            <h3><center>Calculadora Vanilla Shop</h2></center>
         </div>
-        <h3>Produtos</h3>
+        <h3><center>Produtos</h3></center>
         <div id="products" class="products"></div>
-        <h3>Combos</h3>
+        <h3><center>Combos</center></h3>
         <div id="combos" class="combos"></div>
         <div class="result-container">
             <p class="result-box">Total: $ <span id="total">0.00</span> | Devolução (20%): $ <span id="devolucao">0.00</span></p>
         </div>
         <div class="btn-container">
-            <button class="btn" onclick="aplicarParceria()">PARCERIA</button>
-            <button class="btn" onclick="limparValores()">LIMPAR</button>
-            <button class="btn" onclick="mostrarValores()">VALORES</button>
-        </div>
-        <p class="footer">Enviar a devolução nos seguintes contatos:<br>Sett Lothbrook | 358 ou Hel Ariath | 381</p>
-        <p class="footer">Desenvolvido por Sett Lothbrook | 358</p>
+            <button class="btn" onclick="aplicarParceria()">
+				<i class="fas fa-handshake"></i> PARCERIA
+			</button>
+             <button class="btn" onclick="limparValores()">
+				<i class="fas fa-eraser"></i> LIMPAR
+			</button>
+             <button class="btn" onclick="mostrarValores()">
+				<i class="fas fa-tags"></i> VALORES
+			</button>
+        </div><center>
+        <p class="footer">Enviar a devolução nos seguintes contatos:<br />Sett Lothbrook | 358 ou Hel Ariath | 381</p>
+        <p class="footer">Desenvolvido por Sett Lothbrook | 358</p></center>
     </div>
-    
+
     <div id="popup" class="popup">
+        <h3>Carrinho de Compras</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>PRODUTO</th>
+                    <th>QTD</th>
+                    <th>VALOR</th>
+                </tr>
+            </thead>
+            <tbody id="carrinhoItens"></tbody>
+        </table>
+        <button class="close-btn" onclick="fecharPopup()">
+			<i class="fas fa-times"></i> Fechar
+		</button>
+    </div>
+
+    <div id="popupValores" class="popup">
         <h3>Valores dos Produtos</h3>
         <ul id="listaValores"></ul>
-        <button class="btn" onclick="fecharPopup()">Fechar</button>
+        <button class="btn" onclick="fecharPopupValores()">Fechar</button>
     </div>
-    
+
     <script>
         let parceriaAplicada = false; // Variável para controlar o estado do botão
 
@@ -164,16 +289,16 @@
             { name: "Rosa", price: 500 },
             { name: "Urso Pequeno", price: 3000 },
             { name: "Urso Grande", price: 6000 },
-            { name: "Vibrador", price: 10000 }
+            { name: "Vibrador", price: 10000 },
         ];
-        
+
         const combos = [
             { name: "Combo Chá Revelação", price: 80750 },
             { name: "Combo Amor Luxuoso", price: 104500 },
             { name: "Combo Pedido", price: 57000 },
             { name: "Combo Celebração Total", price: 47500 },
             { name: "Combo Romance Perfeito", price: 38000 },
-            { name: "Combo Noite Proibida", price: 47500 }
+            { name: "Combo Noite Proibida", price: 47500 },
         ];
 
         function generateProducts(containerId, items) {
@@ -204,23 +329,33 @@
 
             document.getElementById("total").innerText = total.toLocaleString();
             document.getElementById("devolucao").innerText = devolucao.toLocaleString();
+
+            atualizarCarrinho();
         }
 
         function mostrarValores() {
             const lista = document.getElementById("listaValores");
             lista.innerHTML = "";
 
-            [...products, ...combos].forEach(item => {
+            [...products, ...combos].forEach((item) => {
                 const li = document.createElement("li");
                 li.innerText = `${item.name}: $${item.price.toLocaleString()}`;
                 lista.appendChild(li);
             });
 
-            document.getElementById("popup").style.display = "block";
+            document.getElementById("popupValores").style.display = "block";
+            // efeito fade in
+            setTimeout(() => {
+                document.getElementById("popupValores").classList.add("show");
+            }, 10);
         }
 
-        function fecharPopup() {
-            document.getElementById("popup").style.display = "none";
+        function fecharPopupValores() {
+            const popup = document.getElementById("popupValores");
+            popup.classList.remove("show");
+            setTimeout(() => {
+                popup.style.display = "none";
+            }, 400);
         }
 
         function aplicarParceria() {
@@ -228,18 +363,18 @@
                 // Se a parceria já foi aplicada, não faz nada
                 return;
             }
-            
+
             let total = parseInt(document.getElementById("total").innerText.replace(/\D/g, "")) || 0;
             let novoTotal = total * 0.8; // 20% de desconto
 
             document.getElementById("total").innerText = novoTotal.toLocaleString();
             document.getElementById("devolucao").innerText = (novoTotal * 0.2).toLocaleString();
-            
+
             parceriaAplicada = true; // Marca que a parceria foi aplicada
         }
 
         function limparValores() {
-            document.querySelectorAll("input[type='number']").forEach(input => input.value = 0);
+            document.querySelectorAll("input[type='number']").forEach((input) => (input.value = 0));
             updateTotal();
 
             // Resetando o cálculo para o valor normal
@@ -247,6 +382,75 @@
             let total = 0;
             document.getElementById("total").innerText = total.toLocaleString();
             document.getElementById("devolucao").innerText = (total * 0.2).toLocaleString();
+
+            fecharPopup();
+        }
+
+        function atualizarCarrinho() {
+            const carrinho = document.getElementById("popup");
+            const tbody = document.getElementById("carrinhoItens");
+            tbody.innerHTML = "";
+
+            let hasItems = false;
+
+            // Produtos normais
+            document.querySelectorAll("#products input").forEach((input, index) => {
+                const qtd = Number(input.value);
+                if (qtd > 0) {
+                    hasItems = true;
+                    const nome = products[index].name;
+                    const valor = products[index].price * qtd;
+                    const tr = document.createElement("tr");
+
+                    tr.innerHTML = `
+                        <td>${nome}</td>
+                        <td>${qtd}</td>
+                        <td>$${valor.toLocaleString()}</td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            });
+
+            // Combos
+            document.querySelectorAll("#combos input").forEach((input, index) => {
+                const qtd = Number(input.value);
+                if (qtd > 0) {
+                    hasItems = true;
+                    const nome = combos[index].name;
+                    const valor = combos[index].price * qtd;
+                    const tr = document.createElement("tr");
+
+                    tr.innerHTML = `
+                        <td>${nome}</td>
+                        <td>${qtd}</td>
+                        <td>$${valor.toLocaleString()}</td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            });
+
+            if (hasItems) {
+                carrinho.style.display = "block";
+                setTimeout(() => {
+                    carrinho.classList.add("show");
+                    carrinho.classList.remove("hide");
+                }, 10);
+            } else {
+                carrinho.classList.remove("show");
+                carrinho.classList.add("hide");
+                setTimeout(() => {
+                    carrinho.style.display = "none";
+                }, 400);
+            }
+        }
+
+        function fecharPopup() {
+            const popup = document.getElementById("popup");
+            popup.classList.remove("show");
+            popup.classList.add("hide");
+            setTimeout(() => {
+                popup.style.display = "none";
+            }, 400);
         }
 
         generateProducts("products", products);
